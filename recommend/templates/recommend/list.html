@@ -1,0 +1,41 @@
+{% extends "mainapp/layout.html" %}
+{% load static %}
+
+{% block title %}
+list
+{% endblock title %} 
+
+{% block main %}
+<style>
+.heading-container {
+    width: 100%;
+    text-align: center;
+}
+.heading {
+    font-family: "Lobster", cursive;
+    font-size: 300%;
+    background-color: #d7722c;
+    margin-top: 0px;
+    color: white;
+    padding: 20px 0;
+}
+</style>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 heading-container">
+            <h1 id="title" class="heading">List</h1>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <ul class="list-group">
+                {% for book_name in name %}
+                <li class="list-group-item">{{ book_name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% endblock main %}

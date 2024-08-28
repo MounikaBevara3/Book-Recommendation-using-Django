@@ -1,0 +1,59 @@
+{% extends "mainapp/layout.html" %}
+{% load static %}
+{% block title  %}
+Recommend
+{% endblock title %} 
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'mainapp/css/recommend.css' %}">
+{% endblock head %}
+{% block main %}
+
+      <div class="container py-5">
+        <div class="row py-5">
+          <div class="col-md-12">
+            <h1 class="heading text-center pt-3 pb-3" style="margin-top: 15px; margin-bottom: 40px;">Recommend Books</h1>
+            <form method="POST" action="{% url 'recommend_books' %}">
+              {% csrf_token %}
+              <input type="text" name="user_input" class="form-control input-group input-group-lg mb-3" autocomplete="off" placeholder="Enter Book Name" style="font-size: 23px;" >
+              <input type="submit" class="btn btn-warning text-reset col-md-12 mb-4" style="font-size: 23px;">
+            </form>
+          </div> 
+        <br>       
+          <div class="large-screen" style="width:1200px; margin:0 auto;">
+            <div class="centre, card-deck">        
+          {% for i in data %}
+          <div class="card col-sm-12 col-lg-3 " style="width: 300px;">
+            <div class="row no-gutters">
+                <img class=" card-img  mt-4 " src="{{i.2}}" alt="book Card">
+                <div class="content text-center">
+                  <div class="card-title">{{  i.0 |truncatechars:30 }}</div>
+                  <div class="card-text">by {{ i.1 |truncatechars:25}}</div>
+              </div>
+          </div><br>
+          <a href="javascript:;" onclick='bookDetails(this)' class="btn more-details"
+          data-book-id="{{ book.book_id }}">More Details</a>
+      {% if user.is_authenticated %}
+      <div class='rating-block' id='rating-block-{{ book.book_id }}' onmouseover="rateStart(this)"
+          onclick='rateBook(this)' onmouseout='finishRate(this)' data-book-id="{{ book.book_id }}">
+          <div id='button-text-{{ book.book_id }}'>Rate <i class="fa fa-heart" style="color:red"></i> This
+              Book
+              </a>
+          </div>
+          <div class='rateYo' id='rate-{{ book.book_id }}'></div>
+      </div>
+      {% else %}
+      <div class='rating-block btn' onclick="location.href='{% url 'account_signup' %}'">
+          <div id='button-text'>Rate <i class="fa fa-heart" style="color:red"></i> This Book</a>
+          </div>
+      </div>
+      {% endif %}
+  </div>
+  {% if forloop.counter|divisibleby:"4"  %}
+</div>
+<div class="card-deck  ">
+  {% endif %}
+  {% endfor %}
+</div>
+</div>
+{% endblock main %}
